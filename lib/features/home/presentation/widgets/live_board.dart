@@ -2,7 +2,8 @@ import 'package:agrimind/core/widgets/app_image.dart';
 import 'package:flutter/material.dart';
 
 class LiveBoard extends StatefulWidget {
-  const LiveBoard({super.key});
+  final String image;
+  const LiveBoard({super.key , required this.image});
 
   @override
   State<LiveBoard> createState() => _LiveBoardState();
@@ -45,8 +46,7 @@ class _LiveBoardState extends State<LiveBoard>
           children: [
             // ── الـ stream / صورة ──
             SizedBox.expand(
-              child: Image.asset(
-                AppImages.onboarding2,
+              child: Image.asset(widget.image,
                 fit: BoxFit.cover,
               ),
             ),

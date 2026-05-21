@@ -18,7 +18,7 @@ void main() {
         '/onboarding': (context) => const OnboardingView(),
         '/signup': (context) => const SignupView(),
         '/login':(context) => const LoginView(),
-        '/home':(context) => const HomeView(),
+        '/home':(context) => const HomeScreen(),
 
 
       },

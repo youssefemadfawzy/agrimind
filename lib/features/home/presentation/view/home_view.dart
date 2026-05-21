@@ -1,63 +1,58 @@
-import 'package:agrimind/core/widgets/app_icons.dart';
-import 'package:agrimind/features/home/presentation/widgets/CustomBottomNavBar.dart';
-import 'package:agrimind/features/home/presentation/widgets/header.dart';
-import 'package:agrimind/features/home/presentation/widgets/live_board.dart';
-import 'package:agrimind/features/home/presentation/widgets/parameters_plant.dart';
-import 'package:agrimind/features/home/presentation/widgets/plant_fish_siwtch.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:agrimind/features/home/presentation/widgets/header.dart';
+import 'package:agrimind/features/home/presentation/widgets/plant_fish_siwtch.dart';
+import 'package:agrimind/features/home/presentation/widgets/CustomBottomNavBar.dart';
+import 'package:agrimind/features/home/presentation/widgets/fish_screen.dart';
+import 'package:agrimind/features/home/presentation/widgets/plant_screen.dart';
 
-import '../widgets/temperture_sensor.dart';
-
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeScreenState extends State<HomeScreen> {
   bool isPlantSelected = true;
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            /// 🔥 Header ثابت
+            const Header(),
 
-    return  const Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              
+            const SizedBox(height: 10),
 
-              Header(),
-              SizedBox(height: 15),
-              PlantFishSiwtch(),
-              SizedBox(height: 15,),
-              LiveBoard(),
+            /// 🔁 Switch
+            PlantFishSiwtch(
+              isPlantSelected: isPlantSelected,
+              onChanged: (value) {
+                setState(() {
+                  isPlantSelected = value;
+                });
+              },
+            ),
 
+            const SizedBox(height: 10),
 
-              SizedBox(height: 15,),
-Row(
-  children: [
-    ParametersPlant(description:'too cold' ,name: 'temp' ,num: 10,),
-    ParametersPlant(description:'too cold' ,name: 'temp' ,num: 10,),
-
-  ],
-),
-              TemperatureBarWidget(
-                name: 'Temperature',
-                value: 12,
-                min: 0,
-                max: 40,
+            /// 📦 المحتوى المتغير
+            Expanded(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: isPlantSelected
+                    ? const PlantScreen(key: ValueKey('plant'))
+                    : const FishScreen(key: ValueKey('fish')),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
 
-      bottomNavigationBar: CustomBottomNavBar(),
+      /// 🔻 BottomNav ثابت
+      bottomNavigationBar: const CustomBottomNavBar(),
     );
   }
 }

@@ -11,6 +11,8 @@ class AppImages {
   static const onboarding3 = "assets/image/onboarding 3.jpg";
   static const Welcomeimg = "assets/image/welcomeimg.jpg";
   static const profileimg = "assets/image/profileimg.jpg";
+  static const planthealth = "assets/image/plantai.png";
+  static const fishaihealth = "assets/image/fishai.png";
 
 
 }

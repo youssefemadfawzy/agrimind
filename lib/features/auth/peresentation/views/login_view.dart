@@ -1,4 +1,4 @@
-import 'dart:ui'; // مهم للتمويه
+import 'dart:ui';
 import 'package:agrimind/core/widgets/Custom_InkWell_Icon.dart';
 import 'package:agrimind/core/widgets/app_icons.dart';
 import 'package:agrimind/core/widgets/custom_textfield.dart';
@@ -13,9 +13,36 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  // 🔥 Controllers (مفيش أي تأثير على الشكل)
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  // 🔥 Login function (جاهزة للربط مع Django)
+  void login() {
+    if (emailController.text.isNotEmpty &&
+        passwordController.text.isNotEmpty) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/home',
+            (route) => false,
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill all fields")),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size; // مقاسات الشاشة
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -37,9 +64,8 @@ class _LoginViewState extends State<LoginView> {
             child: _buildBlurCircle(const Color(0xFF4D77F8), size.width * 0.7),
           ),
 
-          // المحتوى الرئيسي
           SafeArea(
-            child: SingleChildScrollView( // عشان مفيش Overflow على شاشات صغيرة
+            child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: size.width * 0.01),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -49,7 +75,7 @@ class _LoginViewState extends State<LoginView> {
                   Text(
                     'Log In',
                     style: TextStyle(
-                      fontSize: size.width * 0.08, // responsive font size
+                      fontSize: size.width * 0.08,
                       fontWeight: FontWeight.w800,
                       color: Colors.black,
                       letterSpacing: -1,
@@ -71,40 +97,46 @@ class _LoginViewState extends State<LoginView> {
 
                   SizedBox(height: size.height * 0.04),
 
-                  const CustomTextField(
+                  // 🔥 EMAIL (نفس الشكل بدون تغيير)
+                  CustomTextField(
+                    controller: emailController,
                     label: "Email",
                     hintText: "email",
                     prefixIcon: Icons.email,
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  const CustomTextField(
+
+                  // 🔥 PASSWORD (نفس الشكل بدون تغيير)
+                  CustomTextField(
+                    controller: passwordController,
                     isPassword: true,
                     label: "Password",
                     hintText: "password",
                     prefixIcon: Icons.lock,
                   ),
+
                   const Padding(
                     padding: EdgeInsets.only(left: 10.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child:  Text('Forgot password?' , style: TextStyle(
-                        color: Color(0xff337eff),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),),
+                      child: Text(
+                        'Forgot password?',
+                        style: TextStyle(
+                          color: Color(0xff337eff),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
+
                   SizedBox(height: size.height * 0.04),
+
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                     child: Row(
                       children: [
-                        const Expanded(
-                          child: Divider(
-                            thickness: 2,
-                          ),
-                        ),
-
+                        const Expanded(child: Divider(thickness: 2)),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Text(
@@ -115,17 +147,13 @@ class _LoginViewState extends State<LoginView> {
                             ),
                           ),
                         ),
-
-                        const Expanded(
-                          child: Divider(
-                            thickness: 2,
-                          ),
-                        ),
+                        const Expanded(child: Divider(thickness: 2)),
                       ],
-
                     ),
                   ),
-                  SizedBox(height: size.height*0.03),
+
+                  SizedBox(height: size.height * 0.03),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -134,24 +162,33 @@ class _LoginViewState extends State<LoginView> {
                       CustomInkwellIcon(icon: AppIcons.icloudicon),
                     ],
                   ),
-                  SizedBox(height: size.height*0.02),
-                  SizedBox(height: size.height*0.02),
+
+                  SizedBox(height: size.height * 0.02),
+
+                  SizedBox(height: size.height * 0.02),
+
+                  // 🔥 BUTTON (غيرنا بس الوظيفة مش الشكل)
                   SizedBox(
                     width: size.width * 0.8,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/home');
+                        login(); // 🔥 هنا الربط الحقيقي
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:const Color(0xff337eff),
-                        padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
+                        backgroundColor: const Color(0xff337eff),
+                        padding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.02,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(24),
                         ),
                       ),
                       child: Text(
                         "Continue",
-                        style: TextStyle(fontSize: size.width * 0.045  , color: Colors.white),
+                        style: TextStyle(
+                          fontSize: size.width * 0.045,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:agrimind/core/widgets/app_icons.dart';
 import 'package:agrimind/features/home/presentation/widgets/Gesturdector_home_plant_fish.dart';
 
-class PlantFishSiwtch extends StatefulWidget {
-  const PlantFishSiwtch({super.key});
+class PlantFishSiwtch extends StatelessWidget {
+  final bool isPlantSelected;
+  final Function(bool) onChanged;
 
-  @override
-  State<PlantFishSiwtch> createState() => _PlantFishSiwtchState();
-}
-
-class _PlantFishSiwtchState extends State<PlantFishSiwtch> {
-  bool isPlantSelected = true;
+  const PlantFishSiwtch({
+    super.key,
+    required this.isPlantSelected,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +29,7 @@ class _PlantFishSiwtchState extends State<PlantFishSiwtch> {
             icon: AppIcons.planticon,
             text: 'Plant',
             isSelected: isPlantSelected,
-            onTap: () {
-              setState(() {
-                isPlantSelected = true;
-              });
-            },
+            onTap: () => onChanged(true),
             activeColor: const Color(0xff00e677),
           ),
 
@@ -42,11 +38,7 @@ class _PlantFishSiwtchState extends State<PlantFishSiwtch> {
             icon: AppIcons.fishicon,
             text: 'Fish',
             isSelected: !isPlantSelected,
-            onTap: () {
-              setState(() {
-                isPlantSelected = false;
-              });
-            },
+            onTap: () => onChanged(false),
             activeColor: const Color(0xff337eff),
           ),
         ],

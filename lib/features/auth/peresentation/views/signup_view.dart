@@ -1,9 +1,8 @@
-import 'dart:ui'; // مهم للتمويه
+import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'package:agrimind/core/widgets/Custom_InkWell_Icon.dart';
 import 'package:agrimind/core/widgets/app_icons.dart';
 import 'package:agrimind/core/widgets/custom_textfield.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SignupView extends StatefulWidget {
   const SignupView({super.key});
@@ -13,15 +12,40 @@ class SignupView extends StatefulWidget {
 }
 
 class _SignupViewState extends State<SignupView> {
+  // 🔥 Controllers
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+
+  // 🔥 Signup function (جاهزة للـ backend)
+  void signup() {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+    final confirmPassword = confirmPasswordController.text.trim();
+
+    print("EMAIL: $email");
+    print("PASSWORD: $password");
+    print("CONFIRM: $confirmPassword");
+
+    // هنا هنربط Django بعدين
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size; // مقاسات الشاشة
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          // دوائر تمويه
           Positioned(
             top: -size.height * 0.08,
             right: -size.width * 0.2,
@@ -38,9 +62,8 @@ class _SignupViewState extends State<SignupView> {
             child: _buildBlurCircle(const Color(0xFF4D77F8), size.width * 0.7),
           ),
 
-          // المحتوى الرئيسي
           SafeArea(
-            child: SingleChildScrollView( // عشان مفيش Overflow على شاشات صغيرة
+            child: SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: size.width * 0.01),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -50,7 +73,7 @@ class _SignupViewState extends State<SignupView> {
                   Text(
                     'Sign Up',
                     style: TextStyle(
-                      fontSize: size.width * 0.08, // responsive font size
+                      fontSize: size.width * 0.08,
                       fontWeight: FontWeight.w800,
                       color: Colors.black,
                       letterSpacing: -1,
@@ -61,30 +84,37 @@ class _SignupViewState extends State<SignupView> {
 
                   Text(
                     'Sign up to access all products and\nstart shopping easily',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: size.width * 0.04,
-                      fontWeight: FontWeight.w400,
                       color: Colors.black54,
                       height: 1.4,
                     ),
-                    textAlign: TextAlign.center,
                   ),
 
                   SizedBox(height: size.height * 0.04),
 
-                  const CustomTextField(
+                  // 🔥 EMAIL
+                  CustomTextField(
+                    controller: emailController,
                     label: "Email",
                     hintText: "email",
                     prefixIcon: Icons.email,
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  const CustomTextField(
+
+                  // 🔥 PASSWORD
+                  CustomTextField(
+                    controller: passwordController,
                     isPassword: true,
                     label: "Password",
                     hintText: "password",
                     prefixIcon: Icons.lock,
                   ),
-                  const CustomTextField(
+
+                  // 🔥 CONFIRM PASSWORD
+                  CustomTextField(
+                    controller: confirmPasswordController,
                     isPassword: true,
                     label: "Confirm Password",
                     hintText: "confirm password",
@@ -92,16 +122,12 @@ class _SignupViewState extends State<SignupView> {
                   ),
 
                   SizedBox(height: size.height * 0.04),
+
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
                     child: Row(
                       children: [
-                        const Expanded(
-                          child: Divider(
-                            thickness: 2,
-                          ),
-                        ),
-
+                        const Expanded(child: Divider(thickness: 2)),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Text(
@@ -112,35 +138,30 @@ class _SignupViewState extends State<SignupView> {
                             ),
                           ),
                         ),
-
-                        const Expanded(
-                          child: Divider(
-                            thickness: 2,
-                          ),
-                        ),
+                        const Expanded(child: Divider(thickness: 2)),
                       ],
-
                     ),
                   ),
-                  SizedBox(height: size.height*0.03),
+
+                  SizedBox(height: size.height * 0.03),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                     CustomInkwellIcon(icon: AppIcons.facicon),
-                     CustomInkwellIcon(icon: AppIcons.googlricon),
-                     CustomInkwellIcon(icon: AppIcons.icloudicon),
+                      CustomInkwellIcon(icon: AppIcons.facicon),
+                      CustomInkwellIcon(icon: AppIcons.googlricon),
+                      CustomInkwellIcon(icon: AppIcons.icloudicon),
                     ],
                   ),
-                  SizedBox(height: size.height*0.02),
+
+                  SizedBox(height: size.height * 0.02),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
                         "You have account? ",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                        ),
+                        style: TextStyle(color: Colors.black),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -149,29 +170,34 @@ class _SignupViewState extends State<SignupView> {
                         child: const Text(
                           "log in",
                           style: TextStyle(
-                            color: Color(0xFF00E68A), // أو أي لون يبرز الكلمة
-                            fontSize: 14,
+                            color: Color(0xFF00E68A),
                             fontWeight: FontWeight.w800,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: size.height*0.02),
+
+                  SizedBox(height: size.height * 0.02),
+
                   SizedBox(
                     width: size.width * 0.8,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        signup(); // 🔥 هنا الربط
+                      },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:Color(0xff337eff),
-                        padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
+                        backgroundColor: const Color(0xff337eff),
+                        padding: EdgeInsets.symmetric(
+                          vertical: size.height * 0.02,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(24),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         "Continue",
-                        style: TextStyle(fontSize: size.width * 0.045  , color: Colors.white),
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
